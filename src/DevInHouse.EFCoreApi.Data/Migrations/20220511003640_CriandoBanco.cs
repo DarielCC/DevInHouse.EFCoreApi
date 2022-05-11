@@ -1,11 +1,10 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace DevInHouse.EFCoreApi.Core.Migrations
+namespace DevInHouse.EFCoreApi.Data.Migrations
 {
-    public partial class CriandoEstrutura : Migration
+    public partial class CriandoBanco : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

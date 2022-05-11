@@ -19,9 +19,11 @@ namespace DevInHouse.EFCoreApi.Api.Controllers
         [HttpGet]
         public ActionResult<List<Livro>> ObterLivros(string? titulo)
         {
-            var livros = _livroService.ObterLivros(titulo);
-            if (livros == null || livros.Count == 0)
+            IEnumerable<Livro>? livros = _livroService.ObterLivros(titulo);
+            if (livros == null || livros.Any())
+            {
                 return NoContent();
+            }
 
             return Ok(livros);
         }
@@ -29,9 +31,11 @@ namespace DevInHouse.EFCoreApi.Api.Controllers
         [HttpGet("{id}")]
         public ActionResult<Livro> ObterLivroPorId(int id)
         {
-            var livro = _livroService.ObterPorId(id);
+            Livro? livro = _livroService.ObterPorId(id);
             if (livro == null)
+            {
                 return NotFound();
+            }
 
             return Ok(livro);
         }
@@ -39,34 +43,38 @@ namespace DevInHouse.EFCoreApi.Api.Controllers
         [HttpPost]
         public ActionResult CriarLivro(LivroRequest livro)
         {
-            var livroEntidade = livro.ConverterParaEntidade();
-            var id = _livroService.CriarLivro(livroEntidade);
-            return CreatedAtAction(nameof(ObterLivroPorId), new { Id = id }, id);
+            try
+            {
+                int id = _livroService.CriarLivro(livro.Titulo, livro.CategoriaId, livro.AutorId, livro.DataPublicacao, livro.Preco);
+                return CreatedAtAction(nameof(ObterLivroPorId), new { Id = id }, id);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+            }
         }
 
         [HttpPut("{id}")]
-        public ActionResult AtualizarLivro(int id, LivroRequest livro)
+        public ActionResult AtualizarLivro(int id, LivroRequest livroRequest)
         {
-            var livroOriginal = _livroService.ObterPorId(id);
-            if (livroOriginal == null)
-                return NotFound();
-
-            var livroAlteracoes = livro.ConverterParaEntidade();
-            _livroService.AtualizarLivro(livroOriginal, livroAlteracoes);
+            try
+            {
+                _livroService.AtualizarLivro(id, livroRequest.Titulo, livroRequest.CategoriaId, livroRequest.AutorId, livroRequest.DataPublicacao, livroRequest.Preco);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex);
+            }
             return NoContent();
         }
-        
-        [HttpPatch("{id}/preco/{preco}")]
-        public ActionResult AtualizarPrecoLivro(int id, decimal preco)
-        {
-            var livroOriginal = _livroService.ObterPorId(id);
-            if (livroOriginal == null)
-                return NotFound();
-
-            _livroService.AtualizarPrecoLivro(livroOriginal, preco);
-            return NoContent();
-        }
-
 
         [HttpDelete("{id}")]
         public ActionResult ExcluirLivro(int id)
@@ -79,12 +87,14 @@ namespace DevInHouse.EFCoreApi.Api.Controllers
             catch (ArgumentException ex)
             {
                 if (ex.ParamName.Equals("id"))
+                {
                     return NotFound();
-                
+                }
+
                 return BadRequest();
             }
             catch (Exception ex)
-            {                
+            {
                 return StatusCode(StatusCodes.Status500InternalServerError, new { Mensagem = ex.Message });
             }
         }

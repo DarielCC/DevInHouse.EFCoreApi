@@ -2,7 +2,7 @@ using DevInHouse.EFCoreApi.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace DevInHouse.EFCoreApi.Core.Data.Mappings
+namespace DevInHouse.EFCoreApi.Data.Mappings
 {
     public class AutorMap : IEntityTypeConfiguration<Autor>
     {
