@@ -15,5 +15,11 @@ namespace DevInHouse.EFCoreApi.Core.Entities
             Nome = nome;
             Sobrenome = sobrenome;
         }
+        public Autor(int id, string nome, string sobrenome)
+        {
+            Id = id;
+            Nome = nome;
+            Sobrenome = sobrenome;
+        }
     }
 }

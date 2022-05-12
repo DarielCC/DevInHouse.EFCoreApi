@@ -1,3 +1,4 @@
+using DevInHouse.EFCoreApi.Api.DTOs;
 using DevInHouse.EFCoreApi.Api.DTOs.Request;
 using DevInHouse.EFCoreApi.Core.Entities;
 using DevInHouse.EFCoreApi.Core.Interfaces;
@@ -17,36 +18,63 @@ namespace DevInHouse.EFCoreApi.Api.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<Livro>> ObterLivros(string? titulo)
+        public async Task<IActionResult> ObterLivrosAsync(string? titulo)
         {
-            IEnumerable<Livro>? livros = _livroService.ObterLivros(titulo);
-            if (livros == null || livros.Any())
-            {
-                return NoContent();
-            }
+            IEnumerable<Livro> livros = await _livroService.ObterLivrosAsync(titulo);
 
-            return Ok(livros);
+            IEnumerable<LivroDTO> livrosDTO = livros.Select(livro => new LivroDTO()
+            {
+                Titulo = livro.Titulo,
+                Preco = livro.Preco,
+                DataPublicacao = livro.DataPublicacao,
+                Categoria = new CategoriaDTO()
+                {
+                    Nome = livro.Categoria.Nome
+                },
+                Autor = new AutorDTO()
+                {
+                    Nome = livro.Autor.Nome
+                }
+            });
+
+            return Ok(livrosDTO);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Livro> ObterLivroPorId(int id)
+        public async Task<IActionResult> ObterLivroPorIdAsync(int id)
         {
-            Livro? livro = _livroService.ObterPorId(id);
+            Livro? livro = await _livroService.ObterPorIdAsync(id);
+
             if (livro == null)
             {
                 return NotFound();
             }
 
-            return Ok(livro);
+            LivroDTO? livroDTO = new LivroDTO()
+            {
+                Titulo = livro.Titulo,
+                Preco = livro.Preco,
+                DataPublicacao = livro.DataPublicacao,
+                Categoria = new CategoriaDTO()
+                {
+                    Nome = livro.Categoria.Nome
+                },
+                Autor = new AutorDTO()
+                {
+                    Nome = livro.Autor.Nome
+                }
+            };
+
+            return Ok(livroDTO);
         }
 
         [HttpPost]
-        public ActionResult CriarLivro(LivroRequest livro)
+        public async Task<IActionResult> CriarLivroAsync(LivroRequest livro)
         {
             try
             {
-                int id = _livroService.CriarLivro(livro.Titulo, livro.CategoriaId, livro.AutorId, livro.DataPublicacao, livro.Preco);
-                return CreatedAtAction(nameof(ObterLivroPorId), new { Id = id }, id);
+                int id = await _livroService.CriarLivroAsync(livro.Titulo, livro.CategoriaId, livro.AutorId, livro.DataPublicacao, livro.Preco);
+                return CreatedAtAction(nameof(CriarLivroAsync), new { Id = id }, id);
             }
             catch (KeyNotFoundException ex)
             {
@@ -59,11 +87,11 @@ namespace DevInHouse.EFCoreApi.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult AtualizarLivro(int id, LivroRequest livroRequest)
+        public async Task<IActionResult> AtualizarLivroAsync(int id, LivroRequest livroRequest)
         {
             try
             {
-                _livroService.AtualizarLivro(id, livroRequest.Titulo, livroRequest.CategoriaId, livroRequest.AutorId, livroRequest.DataPublicacao, livroRequest.Preco);
+                await _livroService.AtualizarLivroAsync(id, livroRequest.Titulo, livroRequest.CategoriaId, livroRequest.AutorId, livroRequest.DataPublicacao, livroRequest.Preco);
             }
             catch (KeyNotFoundException ex)
             {
@@ -77,11 +105,11 @@ namespace DevInHouse.EFCoreApi.Api.Controllers
         }
 
         [HttpDelete("{id}")]
-        public ActionResult ExcluirLivro(int id)
+        public async Task<IActionResult> ExcluirLivroAsync(int id)
         {
             try
             {
-                _livroService.RemoverLivro(id);
+                await _livroService.RemoverLivroAsync(id);
                 return NoContent();
             }
             catch (ArgumentException ex)

@@ -1,6 +1,7 @@
 ﻿using DevInHouse.EFCoreApi.Core.Entities;
 using DevInHouse.EFCoreApi.Data.Context;
 using DevInHouse.EFCoreApi.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace DevInHouse.EFCoreApi.Data.Repositories
 {
@@ -13,8 +14,11 @@ namespace DevInHouse.EFCoreApi.Data.Repositories
             _context = context;
         }
 
-        public Autor? ObterPorId(int id) =>
+        public async Task<IEnumerable<Autor>>? ObterAutoresAsync() => await
+            _context.Autores.ToListAsync();
+
+        public async Task<Autor>? ObterPorIdAsync(int id) => await
             _context.Autores
-                .FirstOrDefault(p => p.Id == id);
+                .FirstOrDefaultAsync(p => p.Id == id);
     }
 }

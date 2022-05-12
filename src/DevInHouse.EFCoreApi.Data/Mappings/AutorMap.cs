@@ -22,6 +22,11 @@ namespace DevInHouse.EFCoreApi.Data.Mappings
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .IsRequired();
+
+            builder.HasData(new List<Autor>
+            {
+                new Autor(1, "João", "Pedro")
+            });
         }
     }
 }

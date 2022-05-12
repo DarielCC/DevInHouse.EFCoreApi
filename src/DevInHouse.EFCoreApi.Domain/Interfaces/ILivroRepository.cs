@@ -4,11 +4,11 @@ namespace DevInHouse.EFCoreApi.Domain.Interfaces
 {
     public interface ILivroRepository
     {
-        IEnumerable<Livro> ObterLivros(string titulo);
-        int InserirLivro(Livro livro);
-        Livro? ObterPorId(int id);
-        void AtualizarLivro(Livro livro);
+        Task<IEnumerable<Livro>> ObterLivrosAsync(string titulo);
+        Task<int> InserirLivroAsync(Livro livro);
+        Task<Livro>? ObterPorIdAsync(int id);
+        Task AtualizarLivroAsync(Livro livro);
 
-        void RemoverLivro(Livro livro);
+        Task RemoverLivroAsync(Livro livro);
     }
 }

@@ -4,14 +4,14 @@ namespace DevInHouse.EFCoreApi.Core.Interfaces
 {
     public interface ILivroService
     {
-        public IEnumerable<Livro> ObterLivros(string titulo);
+        public Task<IEnumerable<Livro>> ObterLivrosAsync(string titulo);
 
-        public Livro? ObterPorId(int id);
+        public Task<Livro>? ObterPorIdAsync(int id);
 
-        public int CriarLivro(string titulo, int categoriaId, int autorId, DateTime dataPublicacao, decimal preco);
+        public Task<int> CriarLivroAsync(string titulo, int categoriaId, int autorId, DateTime dataPublicacao, decimal preco);
 
-        public void AtualizarLivro(int id, string titulo, int categoriaId, int autorId, DateTime dataPublicacao, decimal preco);
+        public Task AtualizarLivroAsync(int id, string titulo, int categoriaId, int autorId, DateTime dataPublicacao, decimal preco);
 
-        public void RemoverLivro(int id);
+        public Task RemoverLivroAsync(int id);
     }
 }

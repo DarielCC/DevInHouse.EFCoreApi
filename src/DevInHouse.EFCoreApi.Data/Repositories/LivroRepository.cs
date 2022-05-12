@@ -14,38 +14,38 @@ namespace DevInHouse.EFCoreApi.Data.Repositories
             _context = context;
         }
 
-        public IEnumerable<Livro> ObterLivros(string titulo) =>
+        public async Task<IEnumerable<Livro>> ObterLivrosAsync(string titulo) => await
             _context.Livros
                 .Include(p => p.Categoria)
                 .Include(p => p.Autor)
                 .Where(p => string.IsNullOrWhiteSpace(titulo) || p.Titulo.Contains(titulo))
-                .ToList();
+                .ToListAsync();
 
-        public Livro? ObterPorId(int id) =>
+        public async Task<Livro>? ObterPorIdAsync(int id) => await
             _context.Livros
                 .Include(p => p.Categoria)
                 .Include(p => p.Autor)
-                .FirstOrDefault(p => p.Id == id);
+                .FirstOrDefaultAsync(p => p.Id == id);
 
-        public int InserirLivro(Livro livro)
+        public async Task<int> InserirLivroAsync(Livro livro)
         {
             _context.Livros.Add(livro);
-            SaveChanges();
+            await SaveChangesAsync();
             return livro.Id;
         }
 
-        public void AtualizarLivro(Livro livro)
+        public async Task AtualizarLivroAsync(Livro livro)
         {
             _context.Livros.Update(livro);
-            SaveChanges();
+            await SaveChangesAsync();
         }
 
-        public void RemoverLivro(Livro livro)
+        public async Task RemoverLivroAsync(Livro livro)
         {
             _context.Livros.Remove(livro);
-            SaveChanges();
+            await SaveChangesAsync();
         }
 
-        private void SaveChanges() => _context.SaveChanges();
+        private async Task SaveChangesAsync() => await _context.SaveChangesAsync();
     }
 }

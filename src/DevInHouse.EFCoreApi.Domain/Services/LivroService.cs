@@ -15,13 +15,13 @@ namespace DevInHouse.EFCoreApi.Core.Services
             _livroRepository = livroRepository;
         }
 
-        public IEnumerable<Livro> ObterLivros(string titulo) => _livroRepository.ObterLivros(titulo);
+        public async Task<IEnumerable<Livro>> ObterLivrosAsync(string titulo) => await _livroRepository.ObterLivrosAsync(titulo);
 
-        public Livro? ObterPorId(int id) => _livroRepository?.ObterPorId(id);
+        public async Task<Livro>? ObterPorIdAsync(int id) => await _livroRepository?.ObterPorIdAsync(id);
 
-        public int CriarLivro(string titulo, int categoriaId, int autorId, DateTime dataPublicacao, decimal preco)
+        public async Task<int> CriarLivroAsync(string titulo, int categoriaId, int autorId, DateTime dataPublicacao, decimal preco)
         {
-            Autor? autor = _autorRepository.ObterPorId(autorId);
+            Autor? autor = await _autorRepository.ObterPorIdAsync(autorId);
             if (autor is null)
             {
                 throw new KeyNotFoundException("Autor não existe");
@@ -39,12 +39,12 @@ namespace DevInHouse.EFCoreApi.Core.Services
                 throw new ArgumentNullException("Título inválido");
             }
 
-            return _livroRepository.InserirLivro(livro);
+            return await _livroRepository.InserirLivroAsync(livro);
         }
 
-        public void AtualizarLivro(int id, string titulo, int categoriaId, int autorId, DateTime dataPublicacao, decimal preco)
+        public async Task AtualizarLivroAsync(int id, string titulo, int categoriaId, int autorId, DateTime dataPublicacao, decimal preco)
         {
-            Livro? livro = _livroRepository.ObterPorId(id);
+            Livro? livro = await _livroRepository.ObterPorIdAsync(id);
 
             if (livro is null)
             {
@@ -52,18 +52,18 @@ namespace DevInHouse.EFCoreApi.Core.Services
             }
 
             livro.AlterarDados(titulo, categoriaId, autorId, dataPublicacao, preco);
-            _livroRepository.AtualizarLivro(livro);
+            await _livroRepository.AtualizarLivroAsync(livro);
         }
 
-        public void RemoverLivro(int id)
+        public async Task RemoverLivroAsync(int id)
         {
-            Livro? livro = ObterPorId(id);
+            Livro? livro = await ObterPorIdAsync(id);
             if (livro == null)
             {
                 throw new ArgumentException("O livro com o identificador informado não existe", "id");
             }
 
-            _livroRepository.RemoverLivro(livro);
+            await _livroRepository.RemoverLivroAsync(livro);
         }
     }
 }

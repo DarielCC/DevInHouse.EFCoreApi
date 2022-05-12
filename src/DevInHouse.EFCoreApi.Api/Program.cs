@@ -3,6 +3,7 @@ using DevInHouse.EFCoreApi.Core.Services;
 using DevInHouse.EFCoreApi.Data.Context;
 using DevInHouse.EFCoreApi.Data.Repositories;
 using DevInHouse.EFCoreApi.Domain.Interfaces;
+using DevInHouse.EFCoreApi.Domain.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,9 +17,18 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
+builder.Services.AddScoped<IAutorService, AutorService>();
 builder.Services.AddScoped<ILivroService, LivroService>();
 builder.Services.AddScoped<ILivroRepository, LivroRepository>();
 builder.Services.AddScoped<IAutorRepository, AutorRepository>();
+
+
+builder.Services.Configure<RouteOptions>(
+        options =>
+        {
+            options.LowercaseUrls = true;
+            options.LowercaseQueryStrings = true;
+        });
 
 var app = builder.Build();
 
