@@ -7,6 +7,7 @@ namespace DevInHouse.EFCoreApi.Domain.Interfaces
         Task<IEnumerable<Livro>> ObterLivrosAsync(string titulo);
         Task<int> InserirLivroAsync(Livro livro);
         Task<Livro>? ObterPorIdAsync(int id);
+        Task<Livro>? ObterPorTituloAsync(string titulo);
         Task AtualizarLivroAsync(Livro livro);
 
         Task RemoverLivroAsync(Livro livro);

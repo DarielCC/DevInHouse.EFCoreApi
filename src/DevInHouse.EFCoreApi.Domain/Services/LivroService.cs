@@ -1,6 +1,8 @@
 using DevInHouse.EFCoreApi.Core.Entities;
 using DevInHouse.EFCoreApi.Core.Interfaces;
 using DevInHouse.EFCoreApi.Domain.Interfaces;
+using DevInHouse.EFCoreApi.Domain.Notifications;
+using System.Net;
 
 namespace DevInHouse.EFCoreApi.Core.Services
 {
@@ -8,11 +10,13 @@ namespace DevInHouse.EFCoreApi.Core.Services
     {
         private readonly IAutorRepository _autorRepository;
         private readonly ILivroRepository _livroRepository;
+        private readonly INotificacaoService _notificacaoService;
 
-        public LivroService(ILivroRepository livroRepository, IAutorRepository autorRepository)
+        public LivroService(ILivroRepository livroRepository, IAutorRepository autorRepository, INotificacaoService notificacaoService)
         {
             _autorRepository = autorRepository;
             _livroRepository = livroRepository;
+            _notificacaoService = notificacaoService;
         }
 
         public async Task<IEnumerable<Livro>> ObterLivrosAsync(string titulo) => await _livroRepository.ObterLivrosAsync(titulo);
@@ -24,19 +28,56 @@ namespace DevInHouse.EFCoreApi.Core.Services
             Autor? autor = await _autorRepository.ObterPorIdAsync(autorId);
             if (autor is null)
             {
-                throw new KeyNotFoundException("Autor não existe");
+                _notificacaoService.InserirNotificacao(new Notificacao()
+                {
+                    StatusCode = HttpStatusCode.NotFound,
+                    Mensagem = "Autor não existe"
+                });
+                return default;
+            }
+
+            var livroPorTitulo = await _livroRepository.ObterPorTituloAsync(titulo);
+
+            if(livroPorTitulo is not null)
+            {
+                _notificacaoService.InserirNotificacao(new Notificacao()
+                {
+                    StatusCode = HttpStatusCode.Ambiguous,
+                    Mensagem = "Livro já existe com esse título"
+                });
+                return default;
             }
 
             Livro? livro = new Livro(titulo, categoriaId, autorId, dataPublicacao, preco);
 
             if (livro is null)
             {
-                throw new ArgumentNullException("Livro inválido");
+                _notificacaoService.InserirNotificacao(new Notificacao()
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Mensagem = "Livro inválido"
+                });
+                return default;
             }
 
             if (livro.Titulo is null)
             {
-                throw new ArgumentNullException("Título inválido");
+                _notificacaoService.InserirNotificacao(new Notificacao()
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Mensagem = "Título inválido"
+                });
+                return default;
+            }
+
+            if (livro.Preco <= 0)
+            {
+                _notificacaoService.InserirNotificacao(new Notificacao()
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Mensagem = "Preço não pode ser zero"
+                });
+                return default;
             }
 
             return await _livroRepository.InserirLivroAsync(livro);

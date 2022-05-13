@@ -7,6 +7,7 @@ namespace DevInHouse.EFCoreApi.Api.Controllers
 {
     [ApiController]
     [Route("/api/[controller]")]
+    [ApiExplorerSettings(GroupName = "autores")]
     public class AutorController : ControllerBase
     {
         private readonly IAutorService _autorService;
