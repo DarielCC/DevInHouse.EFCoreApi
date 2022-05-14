@@ -6,5 +6,6 @@ namespace DevInHouse.EFCoreApi.Domain.Interfaces
     {
         Task<Autor>? ObterPorIdAsync(int id);
         Task<IEnumerable<Autor>>? ObterAutoresAsync();
+        Task<IEnumerable<Autor>>? ObterAutoresV2Async(string nome);
     }
 }

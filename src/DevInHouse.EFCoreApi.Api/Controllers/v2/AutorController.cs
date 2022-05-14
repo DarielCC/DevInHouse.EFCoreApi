@@ -3,11 +3,12 @@ using DevInHouse.EFCoreApi.Core.Entities;
 using DevInHouse.EFCoreApi.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DevInHouse.EFCoreApi.Api.Controllers
+namespace DevInHouse.EFCoreApi.Api.Controllers.v2
 {
     [ApiController]
+    [ApiVersion("2")]
     [Route("/api/v{version:apiVersion}/[controller]")]
-    [ApiExplorerSettings(GroupName = "autores")]
+    [ApiExplorerSettings(GroupName = "autoresv2")]
     public class AutorController : ControllerBase
     {
         private readonly IAutorService _autorService;
@@ -15,9 +16,9 @@ namespace DevInHouse.EFCoreApi.Api.Controllers
         public AutorController(IAutorService autorService) => _autorService = autorService;
 
         [HttpGet]
-        public async Task<IActionResult> ObterAutoresAsync()
+        public async Task<IActionResult> ObterAutoresAsync([FromQuery] string nome)
         {
-            IEnumerable<Autor> autores = await _autorService.ObterAutoresAsync();
+            IEnumerable<Autor> autores = await _autorService.ObterAutoresV2Async(nome);
 
             IEnumerable<AutorDTO> autoresDTO = autores.Select(autor => new AutorDTO()
             {

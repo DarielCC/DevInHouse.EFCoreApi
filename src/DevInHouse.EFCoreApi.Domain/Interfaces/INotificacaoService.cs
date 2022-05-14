@@ -1,4 +1,5 @@
 ﻿using DevInHouse.EFCoreApi.Domain.Notifications;
+using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace DevInHouse.EFCoreApi.Domain.Interfaces
     public interface INotificacaoService
     {
         void InserirNotificacao(Notificacao notificacao);
+        void InserirNotificacoes(ValidationResult validationResult);
 
         bool ExistemNotificacoes();
 

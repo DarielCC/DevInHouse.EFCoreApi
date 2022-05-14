@@ -60,23 +60,10 @@ namespace DevInHouse.EFCoreApi.Core.Services
                 return default;
             }
 
-            if (livro.Titulo is null)
+            var livroValidacao = livro.Validar();
+            if(!livroValidacao.IsValid)
             {
-                _notificacaoService.InserirNotificacao(new Notificacao()
-                {
-                    StatusCode = HttpStatusCode.BadRequest,
-                    Mensagem = "Título inválido"
-                });
-                return default;
-            }
-
-            if (livro.Preco <= 0)
-            {
-                _notificacaoService.InserirNotificacao(new Notificacao()
-                {
-                    StatusCode = HttpStatusCode.BadRequest,
-                    Mensagem = "Preço não pode ser zero"
-                });
+                _notificacaoService.InserirNotificacoes(livroValidacao);
                 return default;
             }
 

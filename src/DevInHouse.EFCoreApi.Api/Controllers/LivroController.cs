@@ -9,7 +9,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace DevInHouse.EFCoreApi.Api.Controllers
 {
     [ApiController]
-    [Route("/api/[controller]")]
+    [Route("/api/v{version:apiVersion}/[controller]")]
     [Produces("application/json")]
     [ApiExplorerSettings(GroupName = "livros")]
     public class LivroController : ControllerBase
@@ -92,29 +92,8 @@ namespace DevInHouse.EFCoreApi.Api.Controllers
         [SwaggerOperation(Summary = "Cria novo livro", Tags = new[] { "Livro" })]
         public async Task<IActionResult> CriarLivroAsync(LivroRequest livro)
         {
-            try
-            {
-                int id = await _livroService.CriarLivroAsync(livro.Titulo, livro.CategoriaId, livro.AutorId, livro.DataPublicacao, livro.Preco);
-
-                if (_notificacaoService.ExistemNotificacoes())
-                {
-                    foreach (var notificacao in _notificacaoService.ObterNotificacoes())
-                    {
-                        if(notificacao.StatusCode == System.Net.HttpStatusCode.NotFound)
-                            return NotFound(notificacao.Mensagem);
-                        else if (notificacao.StatusCode == System.Net.HttpStatusCode.Ambiguous)
-                            return StatusCode(StatusCodes.Status300MultipleChoices, notificacao.Mensagem);
-                        else if (notificacao.StatusCode == System.Net.HttpStatusCode.BadRequest)
-                            return BadRequest(notificacao.Mensagem);
-                    }
-                }
-                
-                return  Created($"{Request.Host}{Request.Path}/{id}", id);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex);
-            }
+            int id = await _livroService.CriarLivroAsync(livro.Titulo, livro.CategoriaId, livro.AutorId, livro.DataPublicacao, livro.Preco);
+            return Created($"{Request.Host}{Request.Path}/{id}", id);
         }
 
         [HttpPut("{id}")]
@@ -126,18 +105,7 @@ namespace DevInHouse.EFCoreApi.Api.Controllers
         [SwaggerOperation(Summary = "Atualiza livro", Tags = new[] { "Livro" })]
         public async Task<IActionResult> AtualizarLivroAsync(int id, LivroRequest livroRequest)
         {
-            try
-            {
-                await _livroService.AtualizarLivroAsync(id, livroRequest.Titulo, livroRequest.CategoriaId, livroRequest.AutorId, livroRequest.DataPublicacao, livroRequest.Preco);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex);
-            }
+            await _livroService.AtualizarLivroAsync(id, livroRequest.Titulo, livroRequest.CategoriaId, livroRequest.AutorId, livroRequest.DataPublicacao, livroRequest.Preco);
             return NoContent();
         }
 
@@ -149,24 +117,8 @@ namespace DevInHouse.EFCoreApi.Api.Controllers
         [SwaggerOperation(Summary = "Apaga livro", Tags = new[] { "Livro" })]
         public async Task<IActionResult> ExcluirLivroAsync(int id)
         {
-            try
-            {
-                await _livroService.RemoverLivroAsync(id);
-                return NoContent();
-            }
-            catch (ArgumentException ex)
-            {
-                if (ex.ParamName.Equals("id"))
-                {
-                    return NotFound();
-                }
-
-                return BadRequest();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { Mensagem = ex.Message });
-            }
+            await _livroService.RemoverLivroAsync(id);
+            return NoContent();
         }
     }
 }

@@ -15,5 +15,6 @@ namespace DevInHouse.EFCoreApi.Domain.Services
         public AutorService(IAutorRepository autorRepository) => _autorRepository = autorRepository;
 
         public async Task<IEnumerable<Autor>> ObterAutoresAsync() => await _autorRepository.ObterAutoresAsync();
+        public async Task<IEnumerable<Autor>> ObterAutoresV2Async(string nome) => await _autorRepository.ObterAutoresV2Async(nome);
     }
 }

@@ -1,3 +1,6 @@
+using DevInHouse.EFCoreApi.Domain.Validations;
+using FluentValidation.Results;
+
 namespace DevInHouse.EFCoreApi.Core.Entities
 {
     public class Livro : Entity
@@ -32,6 +35,15 @@ namespace DevInHouse.EFCoreApi.Core.Entities
         public void AlterarPrecoLivro(decimal preco)
         {
             Preco = preco;
+        }
+
+        public ValidationResult Validar()
+        {
+            var livroValidation = new LivroValidation();
+            livroValidation.ValidateLivro();
+            var result = livroValidation.Validate(this);
+
+            return result;
         }
     }
 }
