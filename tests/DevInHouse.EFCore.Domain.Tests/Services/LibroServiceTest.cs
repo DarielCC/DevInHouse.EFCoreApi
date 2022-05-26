@@ -2,6 +2,7 @@
 using DevInHouse.EFCoreApi.Core.Services;
 using DevInHouse.EFCoreApi.Domain.Interfaces;
 using DevInHouse.EFCoreApi.Domain.Notifications;
+using FluentValidation.Results;
 using Moq;
 using System;
 using System.Collections.Generic;
@@ -89,19 +90,37 @@ namespace DevInHouse.EFCore.Domain.Tests.Services
         {
             //Arrage
             _mockAutorRepository.Setup(m => m.ObterPorIdAsync(1)).ReturnsAsync(new Autor(It.IsAny<string>(), It.IsAny<string>()));
-            _mockNotificacaoService.Setup(m => m.InserirNotificacao(It.IsAny<Notificacao>()));
+            _mockNotificacaoService.Setup(m => m.InserirNotificacoes(It.IsAny<ValidationResult>()));
             _mockLivroRepository.Setup(m => m.ObterPorTituloAsync(It.IsAny<string>()));
-
-            var livro = new Livro(string.Empty, 1, 1, DateTime.Now, 1);
-
+                        
             //Act
-            var id = await _livroService.CriarLivroAsync(It.IsAny<string>(), It.IsAny<int>(), 1, It.IsAny<DateTime>(), It.IsAny<decimal>());
+            var id = await _livroService.CriarLivroAsync(string.Empty, It.IsAny<int>(), 1, It.IsAny<DateTime>(), It.IsAny<decimal>());
 
             //Assert
             Assert.Equal(default, id);
             _mockAutorRepository.Verify(m => m.ObterPorIdAsync(1), Times.Once);
-            _mockNotificacaoService.Verify(m => m.InserirNotificacao(It.IsAny<Notificacao>()), Times.Once);
+            _mockNotificacaoService.Verify(m => m.InserirNotificacoes(It.IsAny<ValidationResult>()), Times.Once);
             _mockLivroRepository.Verify(m => m.ObterPorTituloAsync(It.IsAny<string>()), Times.Once);
+        }
+
+        [Fact]
+        public async Task CriarLivroAsync_CriaLivro_RetornaIdDoLivro()
+        {
+            //Arrage
+            var idMock = 1;
+
+            _mockAutorRepository.Setup(m => m.ObterPorIdAsync(1)).ReturnsAsync(new Autor(It.IsAny<string>(), It.IsAny<string>()));
+            _mockLivroRepository.Setup(m => m.ObterPorTituloAsync(It.IsAny<string>()));
+            _mockLivroRepository.Setup(x => x.InserirLivroAsync(It.IsAny<Livro>())).ReturnsAsync(idMock);
+
+            //Act
+            var id = await _livroService.CriarLivroAsync("Titulo", 1, 1, DateTime.Now, 100);
+
+            //Assert
+            Assert.Equal(idMock, id);
+            _mockAutorRepository.Verify(m => m.ObterPorIdAsync(1), Times.Once);
+            _mockLivroRepository.Verify(m => m.ObterPorTituloAsync(It.IsAny<string>()), Times.Once);
+            _mockLivroRepository.Verify(m => m.InserirLivroAsync(It.IsAny<Livro>()), Times.Once);
         }
     }
 }
