@@ -48,17 +48,7 @@ namespace DevInHouse.EFCoreApi.Core.Services
                 return default;
             }
 
-            Livro? livro = new Livro(titulo, categoriaId, autorId, dataPublicacao, preco);
-
-            if (livro is null)
-            {
-                _notificacaoService.InserirNotificacao(new Notificacao()
-                {
-                    StatusCode = HttpStatusCode.BadRequest,
-                    Mensagem = "Livro inválido"
-                });
-                return default;
-            }
+            var livro = new Livro(titulo, categoriaId, autorId, dataPublicacao, preco);
 
             var livroValidacao = livro.Validar();
             if(!livroValidacao.IsValid)

@@ -21,12 +21,12 @@ namespace DevInHouse.EFCoreApi.Data.Repositories
                 .Where(p => string.IsNullOrWhiteSpace(titulo) || p.Titulo.Contains(titulo))
                 .ToListAsync();
 
-        public async Task<Livro> ObterPorTituloAsync(string titulo) => await
+        public async Task<Livro?> ObterPorTituloAsync(string titulo) => await
             _context.Livros
                 .Where(p => string.IsNullOrWhiteSpace(titulo) || p.Titulo.Contains(titulo))
                 .FirstOrDefaultAsync();
 
-        public async Task<Livro>? ObterPorIdAsync(int id) => await
+        public async Task<Livro?> ObterPorIdAsync(int id) => await
             _context.Livros
                 .Include(p => p.Categoria)
                 .Include(p => p.Autor)
