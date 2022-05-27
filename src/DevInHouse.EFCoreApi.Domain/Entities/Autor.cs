@@ -1,3 +1,5 @@
+using DevInHouse.EFCoreApi.Domain.Validations;
+using FluentValidation.Results;
 using System.Text.Json.Serialization;
 
 namespace DevInHouse.EFCoreApi.Core.Entities
@@ -20,6 +22,15 @@ namespace DevInHouse.EFCoreApi.Core.Entities
             Id = id;
             Nome = nome;
             Sobrenome = sobrenome;
+        }
+
+        public ValidationResult Validar()
+        {
+            var autorValidation = new AutorValidation();
+            autorValidation.ValidateAutor();
+            var result = autorValidation.Validate(this);
+
+            return result;
         }
     }
 }
