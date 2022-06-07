@@ -10,5 +10,9 @@ namespace DevInHouse.EFCoreApi.Application.ApplicationServices
     public interface ILivroApplicationService
     {
         Task<IEnumerable<LivroViewModel>> ObterLivrosAsync(string titulo);
+
+        Task<int> CriarLivroAsync(LivroCreateViewModel livroViewModel);
+
+        Task<LivroCreateViewModel> InicializarLivroCreateViewModelAsync();
     }
 }

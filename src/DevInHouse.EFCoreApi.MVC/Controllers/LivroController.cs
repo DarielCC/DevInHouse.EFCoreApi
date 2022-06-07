@@ -1,7 +1,5 @@
 ﻿using DevInHouse.EFCoreApi.Application.ApplicationServices;
 using DevInHouse.EFCoreApi.Application.ViewModels;
-using DevInHouse.EFCoreApi.MVC.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevInHouse.EFCoreApi.MVC.Controllers
@@ -24,18 +22,22 @@ namespace DevInHouse.EFCoreApi.MVC.Controllers
         }
 
         // GET: LivroController/Create
-        public ActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var livroCreateViewModel = await _livroApplicationService.InicializarLivroCreateViewModelAsync();
+            
+            return View(livroCreateViewModel);
         }
 
         // POST: LivroController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create(LivroCreateViewModel livroViewModel)
         {
             try
             {
+                await _livroApplicationService.CriarLivroAsync(livroViewModel);
+
                 return RedirectToAction(nameof(Index));
             }
             catch

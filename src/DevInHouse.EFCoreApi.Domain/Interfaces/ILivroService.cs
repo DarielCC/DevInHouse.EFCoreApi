@@ -8,7 +8,7 @@ namespace DevInHouse.EFCoreApi.Core.Interfaces
 
         public Task<Livro>? ObterPorIdAsync(int id);
 
-        public Task<int> CriarLivroAsync(string titulo, int categoriaId, int autorId, DateTime dataPublicacao, decimal preco);
+        public Task<int> CriarLivroAsync(Livro livro);
 
         public Task AtualizarLivroAsync(int id, string titulo, int categoriaId, int autorId, DateTime dataPublicacao, decimal preco);
 

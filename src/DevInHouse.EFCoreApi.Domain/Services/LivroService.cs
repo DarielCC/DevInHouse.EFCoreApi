@@ -23,9 +23,9 @@ namespace DevInHouse.EFCoreApi.Core.Services
 
         public async Task<Livro>? ObterPorIdAsync(int id) => await _livroRepository?.ObterPorIdAsync(id);
 
-        public async Task<int> CriarLivroAsync(string titulo, int categoriaId, int autorId, DateTime dataPublicacao, decimal preco)
+        public async Task<int> CriarLivroAsync(Livro livro)
         {
-            Autor? autor = await _autorRepository.ObterPorIdAsync(autorId);
+            Autor? autor = await _autorRepository.ObterPorIdAsync(livro.AutorId);
             if (autor is null)
             {
                 _notificacaoService.InserirNotificacao(new Notificacao()
@@ -36,7 +36,7 @@ namespace DevInHouse.EFCoreApi.Core.Services
                 return default;
             }
 
-            var livroPorTitulo = await _livroRepository.ObterPorTituloAsync(titulo);
+            var livroPorTitulo = await _livroRepository.ObterPorTituloAsync(livro.Titulo);
 
             if(livroPorTitulo is not null)
             {
@@ -47,8 +47,6 @@ namespace DevInHouse.EFCoreApi.Core.Services
                 });
                 return default;
             }
-
-            var livro = new Livro(titulo, categoriaId, autorId, dataPublicacao, preco);
 
             var livroValidacao = livro.Validar();
             if(!livroValidacao.IsValid)

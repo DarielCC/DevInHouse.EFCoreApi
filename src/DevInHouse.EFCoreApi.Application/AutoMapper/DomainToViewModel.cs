@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace DevInHouse.EFCoreApi.Application.AutoMapper
 {
@@ -15,6 +16,9 @@ namespace DevInHouse.EFCoreApi.Application.AutoMapper
         {
             CreateMap<Livro, LivroViewModel>()
                 .ForMember(dest => dest.Publicacao, opt => opt.MapFrom(src => src.DataPublicacao));
+
+            CreateMap<Autor, AutorViewModel>()
+                .ForMember(dest => dest.NomeCompleto, opt => opt.MapFrom(src => $"{src.Nome} {src.Sobrenome}"));
         }
     }
 }

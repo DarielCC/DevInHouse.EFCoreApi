@@ -18,6 +18,7 @@ builder.Services.AddDbContext<DataContext>(options =>
 );
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<IAutorApplicationService, AutorApplicationService>();
 builder.Services.AddScoped<ILivroApplicationService, LivroApplicationService>();
 builder.Services.AddScoped<IAutorService, AutorService>();
 builder.Services.AddScoped<ILivroService, LivroService>();
