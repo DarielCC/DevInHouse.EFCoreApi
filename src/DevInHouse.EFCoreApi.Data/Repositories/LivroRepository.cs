@@ -23,7 +23,7 @@ namespace DevInHouse.EFCoreApi.Data.Repositories
 
         public async Task<Livro?> ObterPorTituloAsync(string titulo) => await
             _context.Livros
-                .Where(p => string.IsNullOrWhiteSpace(titulo) || p.Titulo.Contains(titulo))
+                .Where(p => string.IsNullOrWhiteSpace(titulo) || p.Titulo.ToLower().Equals(titulo.ToLower()))
                 .FirstOrDefaultAsync();
 
         public async Task<Livro?> ObterPorIdAsync(int id) => await

@@ -18,12 +18,16 @@ namespace DevInHouse.EFCoreApi.Application.ViewModels
         [Required(ErrorMessage = "Autor é requerido")]
         public int AutorId { get; set; }
 
+
         [Display(Name = "Publicação")]
+        [DataType(DataType.Date, ErrorMessageResourceName = "Data inválida")]
         [Required(ErrorMessage = "Publicação é requerido")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime Publicacao { get; set; }
 
         [Display(Name = "Preço")]
+        [DataType(DataType.Currency, ErrorMessageResourceName = "Preço inválido")]
+        [Range(1, 9999, ErrorMessage = "Preço inválido")]
         [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage = "Preço é requerido")]
         public decimal Preco { get; set; }
@@ -31,5 +35,8 @@ namespace DevInHouse.EFCoreApi.Application.ViewModels
 
         [Display(Name = "Autores")]
         public IEnumerable<AutorViewModel> Autores { get; set; }
+
+        [Display(Name = "Categorias")]
+        public IEnumerable<CategoriaViewModel> Categorias { get; set; }
     }
 }

@@ -15,7 +15,9 @@ namespace DevInHouse.EFCoreApi.Application.AutoMapper
         public DomainToViewModel()
         {
             CreateMap<Livro, LivroViewModel>()
-                .ForMember(dest => dest.Publicacao, opt => opt.MapFrom(src => src.DataPublicacao));
+                .ForMember(dest => dest.Publicacao, opt => opt.MapFrom(src => src.DataPublicacao))
+                .ForMember(dest => dest.Categoria, opt => opt.MapFrom(src => src.Categoria.Nome))
+                .ForMember(dest => dest.Autor, opt => opt.MapFrom(src => $"{src.Autor.Nome} {src.Autor.Sobrenome}"));
 
             CreateMap<Autor, AutorViewModel>()
                 .ForMember(dest => dest.NomeCompleto, opt => opt.MapFrom(src => $"{src.Nome} {src.Sobrenome}"));

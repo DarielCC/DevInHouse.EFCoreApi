@@ -41,11 +41,19 @@ namespace DevInHouse.EFCoreApi.Application.ApplicationServices
         public async Task<LivroCreateViewModel> InicializarLivroCreateViewModelAsync()
         {
             var autores = await _autorApplicationService.ObterAutoresAsync();
+            var categorias = new List<CategoriaViewModel>()
+            {
+                new CategoriaViewModel() { Id = 1, Nome = "Aventura" },
+                new CategoriaViewModel() { Id = 2, Nome = "Romance" },
+                new CategoriaViewModel() { Id = 3, Nome = "Terror" }
+            };
 
             return new LivroCreateViewModel()
             {
                 Autores = autores,
-                Publicacao = DateTime.Now
+                Publicacao = DateTime.Now,
+                Preco = decimal.Zero,
+                Categorias = categorias
             };
         }
     }

@@ -14,7 +14,7 @@ namespace DevInHouse.EFCoreApi.Data.Mappings
             builder.HasKey(p => p.Id);
 
             builder.Property(p => p.Nome)
-                .HasMaxLength(150)
+                .HasMaxLength(250)
                 .IsUnicode(false)
                 .IsRequired();
 

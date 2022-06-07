@@ -6,9 +6,7 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<a class="btn btn-primary" asp-action="Create" role="button">Novo Livro</a>
 <table class="table">
     <thead>
         <tr>
@@ -19,8 +17,16 @@
                 @Html.DisplayNameFor(model => model.Publicacao)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Categoria)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Autor)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Preco)
             </th>
+            <th></th>
+            <th></th>
             <th></th>
         </tr>
     </thead>
@@ -34,12 +40,22 @@
                 @item.Publicacao.ToString("dd MMMM, yyyy")
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Categoria)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Autor)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Preco)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                <i asp-action="Edit" class="bi bi-pencil-fill"></i>
+            </td>
+            <td>
+                <i asp-action="Details" class="bi bi-card-text"></i>
+            </td>
+            <td>
+                <i asp-action="Delete" class="bi bi-trash-fill"></i>
             </td>
         </tr>
 }

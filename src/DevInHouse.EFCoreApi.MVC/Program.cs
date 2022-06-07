@@ -1,4 +1,6 @@
+using AutoMapper;
 using DevInHouse.EFCoreApi.Application.ApplicationServices;
+using DevInHouse.EFCoreApi.Application.AutoMapper;
 using DevInHouse.EFCoreApi.Core.Interfaces;
 using DevInHouse.EFCoreApi.Core.Services;
 using DevInHouse.EFCoreApi.Data.Context;
@@ -17,7 +19,16 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+var mappingConfig = new MapperConfiguration(mc =>
+{
+    mc.AddProfile(new DomainToViewModel());
+    mc.AddProfile(new ViewModelToDomain());
+});
+
+var mapper = mappingConfig.CreateMapper();
+builder.Services.AddSingleton(mapper);
+
+//builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IAutorApplicationService, AutorApplicationService>();
 builder.Services.AddScoped<ILivroApplicationService, LivroApplicationService>();
 builder.Services.AddScoped<IAutorService, AutorService>();

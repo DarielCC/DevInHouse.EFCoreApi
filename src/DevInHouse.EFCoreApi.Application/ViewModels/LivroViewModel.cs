@@ -12,6 +12,12 @@ namespace DevInHouse.EFCoreApi.Application.ViewModels
         [Display(Name = "Publicação")]
         public DateTime Publicacao { get; set; }
 
+        [Display(Name = "Autor")]
+        public string Autor { get; set; }
+
+        [Display(Name = "Categoria")]
+        public string Categoria { get; set; }
+
         [Display(Name = "Preço")]
         [DisplayFormat(DataFormatString = "{0:N2}")]
         public decimal Preco { get; set; }
