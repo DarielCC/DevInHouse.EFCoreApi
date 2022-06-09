@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -9,7 +9,9 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="11.0.1" />
 	<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
-    <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="6.0.5" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="6.0.5" />
   </ItemGroup>
 
   <ItemGroup>

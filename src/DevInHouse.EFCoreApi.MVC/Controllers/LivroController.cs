@@ -24,8 +24,8 @@ namespace DevInHouse.EFCoreApi.MVC.Controllers
         // GET: LivroController/Create
         public async Task<IActionResult> Create()
         {
-            var livroCreateViewModel = await _livroApplicationService.InicializarLivroCreateViewModelAsync();
-            
+            LivroCreateViewModel? livroCreateViewModel = await _livroApplicationService.InicializarLivroCreateViewModelAsync();
+
             return View(livroCreateViewModel);
         }
 
@@ -47,18 +47,38 @@ namespace DevInHouse.EFCoreApi.MVC.Controllers
         }
 
         // GET: LivroController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            return View();
+            LivroEditViewModel? livroCreateViewModel = await _livroApplicationService.InicializarLivroEditViewModelAsync(id);
+
+            return View(livroCreateViewModel);
         }
 
         // POST: LivroController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(int id, IFormCollection collection)
         {
             try
             {
+                Microsoft.Extensions.Primitives.StringValues titulo = collection["Titulo"];
+                Microsoft.Extensions.Primitives.StringValues autorId = collection["AutorId"];
+                Microsoft.Extensions.Primitives.StringValues categoriaId = collection["CategoriaId"];
+                Microsoft.Extensions.Primitives.StringValues publicacao = collection["Publicacao"];
+                Microsoft.Extensions.Primitives.StringValues preco = collection["Preco"];
+
+                LivroEditViewModel? livroViewModel = new LivroEditViewModel()
+                {
+                    Id = id,
+                    AutorId = Convert.ToInt32(autorId),
+                    CategoriaId = Convert.ToInt32(categoriaId),
+                    Preco = Convert.ToDecimal(preco),
+                    Publicacao = Convert.ToDateTime(publicacao),
+                    Titulo = titulo
+                };
+
+                await _livroApplicationService.EditarLivroAsync(livroViewModel);
+
                 return RedirectToAction(nameof(Index));
             }
             catch

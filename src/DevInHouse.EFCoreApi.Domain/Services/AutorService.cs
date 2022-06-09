@@ -1,12 +1,5 @@
 ﻿using DevInHouse.EFCoreApi.Core.Entities;
 using DevInHouse.EFCoreApi.Domain.Interfaces;
-using DevInHouse.EFCoreApi.Domain.Notifications;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DevInHouse.EFCoreApi.Domain.Services
 {
@@ -21,12 +14,12 @@ namespace DevInHouse.EFCoreApi.Domain.Services
 
         public async Task<int> CriarAutorAsync(string nome, string sobreNome)
         {
-            if(string.IsNullOrEmpty(nome) || string.IsNullOrEmpty(sobreNome))
+            if (string.IsNullOrEmpty(nome) || string.IsNullOrEmpty(sobreNome))
             {
                 throw new ArgumentException("Nome e/ou Sobrenome não podem estar vazios");
             }
 
-            var autor = await _autorRepository.ObterPorNomeAsync(nome);
+            Autor? autor = await _autorRepository.ObterPorNomeAsync(nome);
             if (autor is not null)
             {
                 throw new Exception("Autor já existe");

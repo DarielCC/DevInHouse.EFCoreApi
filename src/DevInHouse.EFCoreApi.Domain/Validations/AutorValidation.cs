@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DevInHouse.EFCoreApi.Core.Entities;
+﻿using DevInHouse.EFCoreApi.Core.Entities;
 using FluentValidation;
 
 namespace DevInHouse.EFCoreApi.Domain.Validations

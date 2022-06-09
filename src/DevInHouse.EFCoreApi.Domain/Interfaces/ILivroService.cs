@@ -10,7 +10,7 @@ namespace DevInHouse.EFCoreApi.Core.Interfaces
 
         public Task<int> CriarLivroAsync(Livro livro);
 
-        public Task AtualizarLivroAsync(int id, string titulo, int categoriaId, int autorId, DateTime dataPublicacao, decimal preco);
+        public Task AtualizarLivroAsync(Livro livro);
 
         public Task RemoverLivroAsync(int id);
     }

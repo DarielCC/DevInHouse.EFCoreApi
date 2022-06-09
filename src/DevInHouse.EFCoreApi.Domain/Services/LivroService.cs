@@ -36,9 +36,9 @@ namespace DevInHouse.EFCoreApi.Core.Services
                 return default;
             }
 
-            var livroPorTitulo = await _livroRepository.ObterPorTituloAsync(livro.Titulo);
+            Livro? livroPorTitulo = await _livroRepository.ObterPorTituloAsync(livro.Titulo);
 
-            if(livroPorTitulo is not null)
+            if (livroPorTitulo is not null)
             {
                 _notificacaoService.InserirNotificacao(new Notificacao()
                 {
@@ -48,8 +48,8 @@ namespace DevInHouse.EFCoreApi.Core.Services
                 return default;
             }
 
-            var livroValidacao = livro.Validar();
-            if(!livroValidacao.IsValid)
+            FluentValidation.Results.ValidationResult? livroValidacao = livro.Validar();
+            if (!livroValidacao.IsValid)
             {
                 _notificacaoService.InserirNotificacoes(livroValidacao);
                 return default;
@@ -58,16 +58,14 @@ namespace DevInHouse.EFCoreApi.Core.Services
             return await _livroRepository.InserirLivroAsync(livro);
         }
 
-        public async Task AtualizarLivroAsync(int id, string titulo, int categoriaId, int autorId, DateTime dataPublicacao, decimal preco)
+        public async Task AtualizarLivroAsync(Livro livro)
         {
-            Livro? livro = await _livroRepository.ObterPorIdAsync(id);
-
             if (livro is null)
             {
                 throw new KeyNotFoundException("Livro não existe");
             }
 
-            livro.AlterarDados(titulo, categoriaId, autorId, dataPublicacao, preco);
+            livro.AlterarDados(livro.Titulo, livro.CategoriaId, livro.AutorId, livro.DataPublicacao, livro.Preco);
             await _livroRepository.AtualizarLivroAsync(livro);
         }
 

@@ -1,9 +1,4 @@
 ﻿using DevInHouse.EFCoreApi.Application.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DevInHouse.EFCoreApi.Application.ApplicationServices
 {
@@ -11,8 +6,14 @@ namespace DevInHouse.EFCoreApi.Application.ApplicationServices
     {
         Task<IEnumerable<LivroViewModel>> ObterLivrosAsync(string titulo);
 
+        Task<LivroEditViewModel> ObterPorIdAsync(int id);
+
         Task<int> CriarLivroAsync(LivroCreateViewModel livroViewModel);
 
+        Task EditarLivroAsync(LivroEditViewModel livroViewModel);
+
         Task<LivroCreateViewModel> InicializarLivroCreateViewModelAsync();
+
+        Task<LivroEditViewModel> InicializarLivroEditViewModelAsync(int id);
     }
 }

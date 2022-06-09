@@ -39,9 +39,9 @@ namespace DevInHouse.EFCoreApi.Core.Entities
 
         public ValidationResult Validar()
         {
-            var livroValidation = new LivroValidation();
+            LivroValidation? livroValidation = new LivroValidation();
             livroValidation.ValidateLivro();
-            var result = livroValidation.Validate(this);
+            ValidationResult? result = livroValidation.Validate(this);
 
             return result;
         }

@@ -26,9 +26,9 @@ namespace DevInHouse.EFCoreApi.Core.Entities
 
         public ValidationResult Validar()
         {
-            var autorValidation = new AutorValidation();
+            AutorValidation? autorValidation = new AutorValidation();
             autorValidation.ValidateAutor();
-            var result = autorValidation.Validate(this);
+            ValidationResult? result = autorValidation.Validate(this);
 
             return result;
         }
