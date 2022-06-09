@@ -65,7 +65,6 @@ namespace DevInHouse.EFCoreApi.Core.Services
                 throw new KeyNotFoundException("Livro não existe");
             }
 
-            livro.AlterarDados(livro.Titulo, livro.CategoriaId, livro.AutorId, livro.DataPublicacao, livro.Preco);
             await _livroRepository.AtualizarLivroAsync(livro);
         }
 

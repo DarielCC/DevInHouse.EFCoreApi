@@ -23,6 +23,16 @@ namespace DevInHouse.EFCoreApi.Core.Entities
             Preco = preco;
         }
 
+        public Livro(int id, string titulo, int categoriaId, int autorId, DateTime dataPublicacao, decimal preco)
+        {
+            Id = id;
+            Titulo = titulo;
+            CategoriaId = categoriaId;
+            AutorId = autorId;
+            DataPublicacao = dataPublicacao;
+            Preco = preco;
+        }
+
         public void AlterarDados(string titulo, int categoriaId, int autorId, DateTime dataPublicacao, decimal preco)
         {
             Titulo = titulo;

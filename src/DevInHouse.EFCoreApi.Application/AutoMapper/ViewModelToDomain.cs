@@ -14,6 +14,14 @@ namespace DevInHouse.EFCoreApi.Application.AutoMapper
                     return new Livro(src.Titulo, src.CategoriaId, src.AutorId, src.Publicacao, src.Preco);
                 })
                 .ForMember(dest => dest.DataPublicacao, opt => opt.MapFrom(src => src.Publicacao));
+
+
+            CreateMap<LivroEditViewModel, Livro>()
+                .ConstructUsing((src, res) =>
+                {
+                    return new Livro(src.Id, src.Titulo, src.CategoriaId, src.AutorId, src.Publicacao, src.Preco);
+                })
+                .ForMember(dest => dest.DataPublicacao, opt => opt.MapFrom(src => src.Publicacao));
         }
     }
 }
