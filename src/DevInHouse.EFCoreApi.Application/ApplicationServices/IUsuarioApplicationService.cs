@@ -6,5 +6,7 @@ namespace DevInHouse.EFCoreApi.Application.ApplicationServices
     public interface IUsuarioApplicationService
     {
         Task<IdentityResult> CriarUsuarioAsync(UsuarioCreateViewModel usuarioCreateViewModel);
+        Task<SignInResult> Login(LoginViewModel loginViewModel);
+        Task Logout();
     }
 }

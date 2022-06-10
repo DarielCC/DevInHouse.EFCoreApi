@@ -17,5 +17,8 @@ namespace DevInHouse.EFCoreApi.Application.ViewModels
         [Display(Name = "Confirme a senha")]
         [Compare("Senha", ErrorMessage = "As senhas não conferem")]
         public string ConfirmacaoSenha { get; set; }
+
+        [Display(Name = "É Admin")]
+        public bool IsAdmin { get; set; }
     }
 }

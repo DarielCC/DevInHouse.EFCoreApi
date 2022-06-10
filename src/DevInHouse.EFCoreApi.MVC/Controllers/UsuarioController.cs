@@ -1,5 +1,6 @@
 ﻿using DevInHouse.EFCoreApi.Application.ApplicationServices;
 using DevInHouse.EFCoreApi.Application.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevInHouse.EFCoreApi.MVC.Controllers
@@ -16,7 +17,7 @@ namespace DevInHouse.EFCoreApi.MVC.Controllers
         // GET: UsuarioController/Create
         public ActionResult Create()
         {
-            return View();
+            return View(new UsuarioCreateViewModel());
         }
 
         // POST: UsuarioController/Create
@@ -28,12 +29,15 @@ namespace DevInHouse.EFCoreApi.MVC.Controllers
             {
                 Microsoft.Extensions.Primitives.StringValues email = collection["Email"];
                 Microsoft.Extensions.Primitives.StringValues senha = collection["Senha"];
+                Microsoft.Extensions.Primitives.StringValues isAdmin = collection["IsAdmin"][0];
 
-                Microsoft.AspNetCore.Identity.IdentityResult? result = await _usuarioAppService.CriarUsuarioAsync(new UsuarioCreateViewModel()
+                var result = await _usuarioAppService.CriarUsuarioAsync(new UsuarioCreateViewModel()
                 {
                     Email = email,
-                    Senha = senha
+                    Senha = senha,
+                    IsAdmin = Convert.ToBoolean(isAdmin)
                 });
+
 
                 if (result.Succeeded)
                 {

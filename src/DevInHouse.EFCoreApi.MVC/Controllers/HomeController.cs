@@ -1,4 +1,5 @@
-﻿using DevInHouse.EFCoreApi.MVC.Models;
+﻿using DevInHouse.EFCoreApi.Application.ApplicationServices;
+using DevInHouse.EFCoreApi.MVC.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -6,11 +7,13 @@ namespace DevInHouse.EFCoreApi.MVC.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IUsuarioApplicationService _usuarioApplicationService;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IUsuarioApplicationService usuarioApplicationService)
         {
             _logger = logger;
+            _usuarioApplicationService = usuarioApplicationService; 
         }
 
         public IActionResult Index()

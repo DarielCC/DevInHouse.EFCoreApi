@@ -1,9 +1,11 @@
 ﻿using DevInHouse.EFCoreApi.Application.ApplicationServices;
 using DevInHouse.EFCoreApi.Application.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevInHouse.EFCoreApi.MVC.Controllers
 {
+    [Authorize]
     public class LivroController : Controller
     {
         private readonly ILivroApplicationService _livroApplicationService;
@@ -46,7 +48,9 @@ namespace DevInHouse.EFCoreApi.MVC.Controllers
             }
         }
 
+
         // GET: LivroController/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int id)
         {
             LivroEditViewModel? livroCreateViewModel = await _livroApplicationService.InicializarLivroEditViewModelAsync(id);
@@ -55,6 +59,7 @@ namespace DevInHouse.EFCoreApi.MVC.Controllers
         }
 
         // POST: LivroController/Edit/5
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, IFormCollection collection)
